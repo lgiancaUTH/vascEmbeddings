@@ -3,6 +3,7 @@ import sys
 sys.path.insert(0, './lib/')
 sys.path.insert(0, './src/')
 
+import time
 import numpy as np
 import matplotlib.pyplot as plt
 import keras as k
@@ -20,8 +21,13 @@ if __name__ == '__main__':
     imgStr = 'data/' + '20051020_55701_0100_PP.tif'
     img = skio.imread(imgStr)
 
+    t0 = time.time()
     # create embedding in one step
     embVec, resEncCoordKept = sv.createOMIAembedding( img )
+    t1 = time.time()
+
+    total = t1-t0
+    print "-"*20,"Embeddings in ", total, " sec"
 
     #or run a visual test to see segmentation driving the embeddings
     #===========================================================
