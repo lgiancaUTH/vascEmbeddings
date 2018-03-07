@@ -1,3 +1,4 @@
+from __future__ import print_function
 from scipy.stats import mannwhitneyu
 from sklearn.metrics import roc_curve, auc, accuracy_score, confusion_matrix, roc_auc_score, cohen_kappa_score
 from scipy.interpolate import interp1d
@@ -64,7 +65,7 @@ def findCutoffPnt3(dataPos, dataNeg):
         lblArr = ~lblArr
         fpr, tpr, thresholds = roc_curve(lblArr, dataAll, pos_label=True)
         roc_auc = auc(fpr, tpr)
-        print 'inverting labels'
+        print ('inverting labels')
 
     # calculate best cut-off based on distance to top corner of ROC curve
     distArr = np.sqrt(np.power(fpr, 2) + np.power((1 - tpr), 2))

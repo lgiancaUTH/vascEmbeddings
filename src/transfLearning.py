@@ -8,6 +8,7 @@
 ##################################################
 
 #Python
+from __future__ import print_function
 import pandas as pd
 import numpy as np
 import sys
@@ -137,7 +138,7 @@ def generateEncoding( mesIn, savedEncFile=None, flipImgArr=None ):
 
     modelEnc = sv.genEncModel()
     if modelEnc is  None:
-        print 'encoding layer not available'
+        print( 'encoding layer not available')
         return None
 
     # get gt
@@ -157,7 +158,7 @@ def generateEncoding( mesIn, savedEncFile=None, flipImgArr=None ):
 
     # generate encoding and feat Matrix
     for imgID in mesFr.index.values:
-        print 'loading ', imgID
+        print ('loading ', imgID)
         imgIDstr = str(imgID)
 
         # calculate/load encoding
@@ -169,14 +170,14 @@ def generateEncoding( mesIn, savedEncFile=None, flipImgArr=None ):
             # flip image
             if (flipImgArr is not None) and flipImgArr[imgID]:
                 img = np.fliplr(img)
-                print 'flipping ', imgID
+                print ('flipping ', imgID)
             
             resEnc, coordEnc = sv.getImageEncoding(img, modelEnc)
 
         # save encoding
         if (hf is not None) and (imgIDstr not in hf):
             hf.create_dataset(imgIDstr, data=resEnc)
-            print 'saving encoding ',  imgIDstr
+            print ('saving encoding ',  imgIDstr)
 
 
         #- filter out "empty vectors"
@@ -348,7 +349,7 @@ def crossValidation( X, y ):
                 # convert labels to numpy
     yCvArr = np.array(yCV)
     for mId in mdlDic:
-        print '-' * 10, mdlDic[mId]['name']
+        print ('-' * 10, mdlDic[mId]['name'])
 
         # global AUC/significance
         scoresArr = mdlDic[mId]['scores']
@@ -359,9 +360,9 @@ def crossValidation( X, y ):
             # store aucStr
         mdlDic[mId]['aucStr'] = aucStr
 
-        print aucStr
-        print 'roc_auc_t: {:0.3f}, sens: {:0.3f}, spec: {:0.3f}, cutoffTh: {:0.3f}, kappa: {:0.3f}, acc: {:0.3f}'.format(
-            roc_auc, sens, spec, cutoffTh, kappa, acc)
+        print (aucStr)
+        print ('roc_auc_t: {:0.3f}, sens: {:0.3f}, spec: {:0.3f}, cutoffTh: {:0.3f}, kappa: {:0.3f}, acc: {:0.3f}'.format(
+            roc_auc, sens, spec, cutoffTh, kappa, acc))
 
     # ---
 
@@ -394,7 +395,7 @@ def tmpPlotInteractiveProj(mesIn, X, isInteractive=True):
         distVec, indDstVec = nbrsMod.kneighbors([coordMeanVec])
 
         selFr = gtFr.iloc[indDstVec.flatten()]
-        print selFr['img']
+        print (selFr['img'])
         imgSelLst = []
         for (_, row), fIdx in zip(selFr.iterrows(), range(len(gtFr))):
             imgTmp  = skio.imread( imgDir + row['img'] )
@@ -463,7 +464,7 @@ def findSimilarImgs( mesIn, X, nNeighIn=5, maxImgNum2Disp=10 ):
         if len(np.intersect1d( fileShownArr, fileLst )):
             continue # skip
         # image names
-        print i, fileLst
+        print (i, fileLst)
 
         imgSelLst = []
         for fTmp in fileLst:
@@ -517,14 +518,14 @@ def rnnTrain( mesFr, y, savedEncFile, modelFile ):
 
     from keras.utils import plot_model
     plot_model(model, to_file='modelRnn.png', show_shapes=True)
-    print 'plot'
+    print ('plot')
 
     hf = h5py.File(savedEncFile, "r")
 
     X = np.zeros((len(mesFr), MAX_SMP_SIZE, FEAT_VEC_SIZE) ) # feat matrix
     # generate encoding and feat Matrix
     for nId, imgID in enumerate(mesFr.index.values): # nId, incremental id
-        print 'loading ', imgID
+        print ('loading ', imgID)
         imgIDstr = str(imgID)
 
         # load encoding
@@ -574,7 +575,7 @@ def rnnTest( mesFr, y, savedEncFile, modelIn ):
     X = np.zeros((len(mesFr), MAX_SMP_SIZE, FEAT_VEC_SIZE) ) # feat matrix
     # generate encoding and feat Matrix
     for nId, imgID in enumerate(mesFr.index.values): # nId, incremental id
-        print 'loading ', imgID
+        print ('loading ', imgID)
         imgIDstr = str(imgID)
 
         # load encoding
@@ -595,7 +596,7 @@ def rnnTest( mesFr, y, savedEncFile, modelIn ):
 
     p = modelIn.predict(X, batch_size=60)
 
-    print met.roc_auc_score(y, p.flatten())
+    print (met.roc_auc_score(y, p.flatten()))
 
     return p
 
@@ -651,7 +652,7 @@ if __name__ == '__main__':
     mes = MessidorDR()
 
     # Run cross validation
-    print 'retinopathy 0 vs all'
+    print ('retinopathy 0 vs all')
     # set test
     y = (mes.gtFr['retinopathy']>0).values
     #y = (mes.gtFr['edemaRisk']>0).values
@@ -666,7 +667,7 @@ if __name__ == '__main__':
         X = generateEncoding(mes, ENC_FILE)
         saveH5(X, 'featMat', FEAT_MAT_FILE)
     else:
-        print 'loading ', FEAT_MAT_FILE
+        print ('loading ', FEAT_MAT_FILE)
         X = loadH5('featMat', FEAT_MAT_FILE)
 
     # # add DR features
@@ -678,21 +679,21 @@ if __name__ == '__main__':
     # tmpPlotInteractiveProj(mes, X, isInteractive=False)
     # findSimilarImgs(mes, X, 5) # paper
 
-    # print 'n=',len(y)
+    # print ('n=',len(y))
     # crossValidation(X, y)
     #
-    print 'retinopathy 0 vs 3'
+    print ('retinopathy 0 vs 3')
     lbl = (mes.gtFr['retinopathy'] == 0) | (mes.gtFr['retinopathy'] > 2)
     gtFr2 = mes.gtFr[lbl]
     X2 = X[lbl,:]
     y2 = (gtFr2['retinopathy']>0).values
-    print 'n=', len(y2)
+    print ('n=', len(y2))
     crossValidation(X2, y2)
     #
-    # print 'retinopathy 0 vs 1'
+    # print ('retinopathy 0 vs 1')
     # lbl = (mes.gtFr['retinopathy'] == 0) | (mes.gtFr['retinopathy'] == 1)
     # gtFr2 = mes.gtFr[lbl]
     # X2 = X[lbl,:]
     # y2 = (gtFr2['retinopathy']>0).values
-    # print 'n=', len(y2)
+    # print ('n=', len(y2))
     # crossValidation(X2, y2)

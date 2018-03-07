@@ -7,7 +7,7 @@
 #
 ##################################################
 
-
+from __future__ import print_function
 import numpy as np
 import ConfigParser
 
@@ -322,8 +322,8 @@ patch_width = patches_imgs_train.shape[3]
 
 model = get_unet_autoenc2(n_ch, patch_height, patch_width)  #the U-net model with autoencoder
 
-print "Check: final output of the network:"
-print model.output_shape
+print ("Check: final output of the network:")
+print (model.output_shape)
 plot_model(model, to_file='./'+name_experiment+'/'+name_experiment + '_model.png')   #check how the model looks like
 json_string = model.to_json()
 open('./'+name_experiment+'/'+name_experiment +'_architecture.json', 'w').write(json_string)

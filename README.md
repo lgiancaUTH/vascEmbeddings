@@ -20,12 +20,9 @@ It also include  a visual ouput of the vasculature segmentation used to drive th
 N.B. The function generating the embeddings reloads on the fly the model see the generateEncoding. An example of a more efficient way of generating the encodings for large dataset is in the generateEncoding function of [transfLearning.py](src/transfLearning.py)
 
 ## Requirements
-This code requires Python 2.x 
- (although it can probably easily ported to 3.x)
- 
- These are the packages that need to be installed
+ These are the packages that need to be installed for Python 2.x
  ~~~
- conda install python=2.7 tensorflow-gpu keras pandas scikit-learn scikit-image matplotlib seaborn opencv ipython jupyter 
+ conda install python=2.7 tensorflow-gpu keras pandas scikit-learn scikit-image matplotlib seaborn opencv ipython jupyter configparser
  ~~~
  
  The code was tested using the coda environment in this file:  [conda_env.yml](conda_env.yml)
@@ -34,5 +31,7 @@ This code requires Python 2.x
  ~~~
  conda create --name environmentName --file conda_env.yml
  ~~~
+ 
+ An initial version of a Python 3-compatible codebase has been added.  
  
  

@@ -5,6 +5,7 @@
 ##################################################
 
 #Python
+from __future__ import print_function
 import pandas as pd
 import numpy as np
 import sys
@@ -184,7 +185,7 @@ def findLRmatch( mesIn, X, nNeighMaxIn=5, stepIn=10 ):
         ratioFoundLst.append(ratioFound)
         nnLst.append(curNN)
         # print progress
-        print curNN, 'of', nNeighMaxIn
+        print (curNN, 'of', nNeighMaxIn)
         
             
         
@@ -214,11 +215,11 @@ if __name__ == '__main__':
         # tl.saveH5(X, 'featMat', FEAT_MAT_FILE)
         # #----
     else:
-        print 'loading ', FEAT_MAT_FILE
+        print ('loading ', FEAT_MAT_FILE)
         X = tl.loadH5('featMat', FEAT_MAT_FILE)
 
 
-    print findLRmatch( mes, X, 1 )
+    print (findLRmatch( mes, X, 1 ))
 
 
     #=== plot curve

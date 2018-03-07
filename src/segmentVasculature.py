@@ -6,8 +6,10 @@
 ##################################################
 
 #Python
+from __future__ import print_function
 import numpy as np
-import ConfigParser
+#import ConfigParser
+from configparser import RawConfigParser # requires "configparser" package
 from matplotlib import pyplot as plt
 #Keras
 from keras.models import model_from_json
@@ -31,7 +33,7 @@ from pre_processing import my_PreProc
 
 
 #========= CONFIG FILE TO READ FROM =======
-config = ConfigParser.RawConfigParser()
+config = RawConfigParser()
 # config.read('test3/test3_configuration.txt') # original
 config.read('test6/test6_configuration.txt') # with encoding
 #===========================================
@@ -75,9 +77,9 @@ def extract_ordered_overlap(full_imgs, patch_h, patch_w,stride_h,stride_w):
     assert ((img_h-patch_h)%stride_h==0 and (img_w-patch_w)%stride_w==0)
     N_patches_img = ((img_h-patch_h)//stride_h+1)*((img_w-patch_w)//stride_w+1)  #// --> division between integers
     N_patches_tot = N_patches_img*full_imgs.shape[0]
-    print "Number of patches on h : " +str(((img_h-patch_h)//stride_h+1))
-    print "Number of patches on w : " +str(((img_w-patch_w)//stride_w+1))
-    print "number of patches per image: " +str(N_patches_img) +", totally for this dataset: " +str(N_patches_tot)
+    print ("Number of patches on h : " +str(((img_h-patch_h)//stride_h+1)))
+    print ("Number of patches on w : " +str(((img_w-patch_w)//stride_w+1)))
+    print ("number of patches per image: " +str(N_patches_img) +", totally for this dataset: " +str(N_patches_tot))
     patches = np.empty((N_patches_tot,full_imgs.shape[1],patch_h,patch_w))
     coordArr = np.empty(  (N_patches_tot, 4), dtype=int ) # coordinates fpr patches x (y,x,height,width)
     iter_tot = 0   #iter over the total number of patches (N_patches)
@@ -109,12 +111,12 @@ def recompone_overlapTF(preds, img_h, img_w, stride_h, stride_w):
     N_patches_h = (img_h-patch_h)//stride_h+1
     N_patches_w = (img_w-patch_w)//stride_w+1
     N_patches_img = N_patches_h * N_patches_w
-    print "N_patches_h: " +str(N_patches_h)
-    print "N_patches_w: " +str(N_patches_w)
-    print "N_patches_img: " +str(N_patches_img)
+    print ("N_patches_h: " +str(N_patches_h))
+    print ("N_patches_w: " +str(N_patches_w))
+    print ("N_patches_img: " +str(N_patches_img))
     assert (preds.shape[0]%N_patches_img==0)
     N_full_imgs = preds.shape[0]//N_patches_img
-    print "According to the dimension inserted, there are " +str(N_full_imgs) +" full images (of " +str(img_h)+"x" +str(img_w) +" each)"
+    print ("According to the dimension inserted, there are " +str(N_full_imgs) +" full images (of " +str(img_h)+"x" +str(img_w) +" each)")
     full_prob = np.zeros((N_full_imgs,1,img_h,img_w))  #itialize to zero mega array with sum of Probabilities
     full_sum = np.zeros((N_full_imgs,1,img_h,img_w))
 
@@ -128,7 +130,7 @@ def recompone_overlapTF(preds, img_h, img_w, stride_h, stride_w):
     assert(k==preds.shape[0])
     assert(np.min(full_sum)>=1.0)  #at least one
     final_avg = full_prob/full_sum
-    print final_avg.shape
+    print (final_avg.shape)
     assert(np.max(final_avg)<=1.0) #max value for a pixel is 1.0
     assert(np.min(final_avg)>=0.0) #min value for a pixel is 0.0
     return final_avg
@@ -275,7 +277,7 @@ def createOMIAembedding( imgIn ):
 
     modelEnc = genEncModel()
     if modelEnc is  None:
-        print 'encoding layer not available'
+        print ('encoding layer not available')
         return None
 
     # get embedding according to default model
@@ -311,7 +313,7 @@ if __name__ == '__main__':
     # create model encoding output
     modelEnc = genEncModel()
     if modelEnc is  None:
-        print 'encoding layer not available'
+        print ('encoding layer not available')
 
     # load example image
     imgStr = 'data/' + '20051020_55701_0100_PP.tif'

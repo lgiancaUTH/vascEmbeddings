@@ -165,5 +165,6 @@ dependencies:
   - jupyter-console==5.2.0
   - jupyter-core==4.4.0
   - prompt-toolkit==1.0.15
+  - configparser
 prefix: /home/lgianca/anaconda2/envs/py2-ret
 

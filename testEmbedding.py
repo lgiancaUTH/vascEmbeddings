@@ -1,3 +1,4 @@
+from __future__ import print_function
 import sys
 # include subdirectories
 sys.path.insert(0, './lib/')
@@ -27,7 +28,7 @@ if __name__ == '__main__':
     t1 = time.time()
 
     total = t1-t0
-    print "-"*20,"Embeddings in ", total, " sec"
+    print ("-"*20,"Embeddings in ", total, " sec")
 
     #or run a visual test to see segmentation driving the embeddings
     #===========================================================
@@ -37,7 +38,7 @@ if __name__ == '__main__':
     # create model encoding output
     modelEnc =  sv.genEncModel()
     if modelEnc is  None:
-        print 'encoding layer not available'
+        print ('encoding layer not available')
 
     # segment
     resImg =  sv.segmentImage( img, model )

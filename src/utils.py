@@ -1,3 +1,4 @@
+from __future__ import print_function
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -14,7 +15,7 @@ def plotScatterPicker(  fCbk, **spdArg ):
         N = len(event.ind)
         if not N: return True
 
-        print event.ind
+        print (event.ind)
         fCbk(event.ind)
         # figi = plt.figure()
         # for subplotnum, dataind in enumerate(event.ind):
