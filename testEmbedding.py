@@ -18,6 +18,9 @@ import segmentVasculature as sv
 
 
 if __name__ == '__main__':
+    VISUAL_OUTPUT = False
+
+
     # load example image
     imgStr = 'data/' + '20051020_55701_0100_PP.tif'
     img = skio.imread(imgStr)
@@ -47,9 +50,14 @@ if __name__ == '__main__':
         resEnc, resEncCoord =  sv.getImageEncoding( img, modelEnc )
 
     # visual output
-    skio.imshow(  np.hstack( (sktr.resize(img[:,:,1], resImg.shape), resImg) ) )
+    imgOut = np.hstack((sktr.resize(img[:, :, 1], resImg.shape), resImg))
+    if VISUAL_OUTPUT:
+        skio.imshow( imgOut  )
 
-    sv.checkFiltering(resImg, resEnc, resEncCoord)
-    plt.show()
+        sv.checkFiltering(resImg, resEnc, resEncCoord)
+        plt.show()
+    else:
+        skio.imsave( 'data/testEmbOutput.png', imgOut )
+
     # ===========================================================
 
